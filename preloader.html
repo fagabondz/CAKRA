@@ -1,0 +1,29 @@
+<style>
+#preloader{position:fixed;inset:0;z-index:9999;background:#060d13;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .6s ease}
+#preloader.hide{opacity:0;pointer-events:none}
+.map-container{position:relative;width:88%;max-width:900px}
+/* Lapisan bawah: daratan redup */
+.map-base{width:100%;display:block;filter:brightness(.22) grayscale(60%)}
+/* Lapisan atas: daratan menyala, terbuka dari bawah ke atas */
+.map-fill{position:absolute;top:0;left:0;width:100%;display:block;clip-path:inset(100% 0 0 0);filter:drop-shadow(0 0 6px rgba(77,238,234,.55));will-change:clip-path}
+.loading-text{margin-top:24px;color:#4deeea;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;letter-spacing:3px}
+@media(prefers-reduced-motion:reduce){#preloader{transition:none}}
+</style>
+<div id="preloader" aria-hidden="true">
+  <div class="map-container">
+    <img src="/peta-indonesia.webp" alt="" class="map-base">
+    <img src="/peta-indonesia.webp" alt="" class="map-fill" id="map-fill">
+  </div>
+  <div class="loading-text">MEMUAT DATA... <span id="preloaderPercent">0%</span></div>
+</div>
+<noscript><style>#preloader{display:none}</style></noscript>
+<script>
+window.CakraPreloader=(()=>{
+  const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let done=false,p=0;
+  function render(){const f=document.getElementById('map-fill'),l=document.getElementById('preloaderPercent');if(f)f.style.clipPath=`inset(${100-p}% 0 0 0)`;if(l)l.textContent=p+'%'}
+  function setProgress(n){if(done)return;p=Math.max(p,Math.max(0,Math.min(100,Math.round(n))));render();if(p>=100)finish()}
+  function finish(){if(done)return;done=true;const el=document.getElementById('preloader');if(!el)return;const hide=()=>{el.classList.add('hide');setTimeout(()=>{el.style.display='none'},REDUCED?0:600)};if(REDUCED){hide()}else{setTimeout(hide,300)}}
+  return{setProgress,finish};
+})();
+</script>

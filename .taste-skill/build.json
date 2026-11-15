@@ -1,0 +1,11 @@
+{
+ "page": "dashboard.html",
+ "url": null,
+ "root": null,
+ "kind": "software",
+ "category": "YouTube comment intelligence",
+ "primary": "Analyze now",
+ "rounds": 3,
+ "start": "2026-11-13T11:11:18.522Z",
+ "by": "gate.mjs --start"
+}
